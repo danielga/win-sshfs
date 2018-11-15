@@ -634,11 +634,13 @@ namespace Sshfs
         }
 
         NtStatus IDokanOperations.GetVolumeInformation(out string volumeLabel, out FileSystemFeatures features,
-                                                         out string filesystemName, DokanFileInfo info)
+            out string filesystemName, out uint maximumComponentLength, DokanFileInfo info)
         {
             LogFSActionSuccess("DiskInfo", _volumeLabel, null, "");
 
             volumeLabel = _volumeLabel;
+
+            maximumComponentLength = 255;
 
             filesystemName = "SSHVFS";
 
