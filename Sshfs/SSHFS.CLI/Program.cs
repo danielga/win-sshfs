@@ -1,18 +1,12 @@
 ﻿using CommandLine;
 using DokanNet;
+using DokanNet.Logging;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 using Sshfs;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using CommandLine.Text;
-using DokanNet.Logging;
 
 namespace SSHFS.CLI
 {
@@ -125,15 +119,6 @@ namespace SSHFS.CLI
                     : new PrivateKeyFile(k));
 
             return new PrivateKeyConnectionInfo(options.Host, options.Port, options.Username, pkFiles.ToArray());
-        }
-
-        static string ReadPassword(string prompt)
-        {
-            if (!Console.IsInputRedirected)
-                return ReadLine.ReadPassword(prompt);
-
-            Console.WriteLine(prompt);
-            return Console.ReadLine();
         }
 
         static KeyboardInteractiveConnectionInfo KeyboardInteractiveConnectionInfo(Options options, string pass)
