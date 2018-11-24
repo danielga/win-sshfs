@@ -77,7 +77,10 @@ namespace SSHFS.CLI
                 throw new InvalidOperationException(
                     "Could not connect to server with any known authentication mechanism");
 
-            fs.Mount($"{options.DriveLetter}", options.Logging ? null : new NullLogger());
+            fs.Disconnected += (sender, e) => Environment.Exit(0);
+            fs.ErrorOccurred += (sender, e) => Environment.Exit(0);
+
+            fs.Mount($"{options.DriveLetter}", options.Logging ? null : new ConsoleLogger());
         }
 
         static IEnumerable<(string, ConnectionInfo)> GetAuthMechanisms(Options options)
