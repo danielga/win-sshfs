@@ -6,7 +6,9 @@ using Renci.SshNet.Common;
 using Sshfs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace SSHFS.CLI
 {
@@ -59,8 +61,16 @@ namespace SSHFS.CLI
 
     class Program
     {
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        static extern bool SetDllDirectory(string lpPathName);
+
         static void Main(string[] args)
         {
+            string sAppPath = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().
+                GetName().CodeBase)).LocalPath;
+            string libFolder = (IntPtr.Size == 4) ? "x86" : "x64";
+            SetDllDirectory(Path.Combine(sAppPath, libFolder));
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(Start);
         }
