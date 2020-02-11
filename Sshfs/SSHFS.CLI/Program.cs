@@ -90,7 +90,14 @@ namespace SSHFS.CLI
             fs.Disconnected += (sender, e) => Environment.Exit(0);
             fs.ErrorOccurred += (sender, e) => Environment.Exit(0);
 
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+                e.Cancel = true;
+                Console.WriteLine("Ctrl-C detected, start exiting . . .");
+                Dokan.Unmount(options.DriveLetter);
+            };
+
             fs.Mount($"{options.DriveLetter}", options.Logging ? null : new ConsoleLogger());
+            Console.WriteLine("Program exited gracefully.");
         }
 
         static IEnumerable<(string, ConnectionInfo)> GetAuthMechanisms(Options options)
