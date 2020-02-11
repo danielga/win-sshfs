@@ -96,7 +96,16 @@ namespace SSHFS.CLI
                 Dokan.Unmount(options.DriveLetter);
             };
 
-            fs.Mount($"{options.DriveLetter}", options.Logging ? null : new ConsoleLogger());
+            ILogger logger = null; // Use default logger in DokanNet
+            if (options.Logging)
+            {
+                logger = new ConsoleLogger(); // Verbose
+            }
+            else
+            {
+                logger = new NullLogger(); // Override the default logger in DokanNet
+            }
+            fs.Mount($"{options.DriveLetter}", logger);
             Console.WriteLine("Program exited gracefully.");
         }
 
