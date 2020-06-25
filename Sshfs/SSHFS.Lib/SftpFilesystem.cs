@@ -1547,7 +1547,7 @@ namespace Sshfs
             // if (sections.HasFlag(AccessControlSections.Owner))
             //security.SetOwner(new NTAccount("None"));
             // if (sections.HasFlag(AccessControlSections.Group))
-            security.SetGroup(new NTAccount("None"));
+            security.SetGroup(everyone);
 
             LogFSActionSuccess("GetFileSecurity", filename, (SftpContext)info.Context, "Sections:{0} Rights:{1}", sections, rights);
             return NtStatus.Success;
